@@ -69,7 +69,8 @@ namespace SignalrCrud.Controllers
             {
                 _context.Add(product);
                 await _context.SaveChangesAsync();
-                await _hubContext.Clients.All.SendAsync("LoadProducts");
+                var prod = _context.Products.ToList();
+                await _hubContext.Clients.All.SendAsync("LoadProducts", prod);
                 return RedirectToAction(nameof(Index));
             }
             return View(product);
@@ -109,7 +110,8 @@ namespace SignalrCrud.Controllers
                 {
                     _context.Update(product);
                     await _context.SaveChangesAsync();
-                    await _hubContext.Clients.All.SendAsync("LoadProducts");
+                    var prod = _context.Products.ToList();
+                    await _hubContext.Clients.All.SendAsync("LoadProducts", prod);
 
                 }
                 catch (DbUpdateConcurrencyException)
