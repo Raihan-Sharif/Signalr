@@ -156,7 +156,9 @@ namespace SignalrCrud.Controllers
             var product = await _context.Products.FindAsync(id);
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();
-            await _hubContext.Clients.All.SendAsync("LoadProducts");
+            var prod = _context.Products.ToList();
+
+            await _hubContext.Clients.All.SendAsync("LoadProducts",prod);
 
             return RedirectToAction(nameof(Index));
         }
